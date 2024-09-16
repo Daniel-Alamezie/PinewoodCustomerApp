@@ -1,0 +1,77 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Customer Management";
+}
+
+<div class="container">
+    <div class="text-center">
+        <h1>Customer Management</h1>
+
+        <h2>Edit or Add a New Customer</h2>
+    </div>
+
+    <form method="post" class="form-horizontal flex-column">
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label text-end">Name:</label>
+            <div class="col-sm-6">
+                <input asp-for="NewCustomer.FullName" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label text-end">Phone Number:</label>
+            <div class="col-sm-6">
+                <input asp-for="NewCustomer.PhoneNumber" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label text-end">Email:</label>
+            <div class="col-sm-6">
+                <input asp-for="NewCustomer.Email" class="form-control" type="email" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 text-center justify-content-center">
+                <button type="submit" class="btn btn-primary">Add Customer</button>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <h2 class="text-center">Existing Customers</h2>
+    @if (Model.Customers.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model.Customers)
+                {
+                    <tr>
+                        <td>@customer.FullName</td>
+                        <td>@customer.PhoneNumber</td>
+                        <td>@customer.Email</td>
+                        <td>
+                            <a asp-page="/Edit" asp-route-id="@customer.Id" class="btn btn-primary">Edit</a>
+
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@customer.Id" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-center">No customers found.</p>
+    }
+</div>
